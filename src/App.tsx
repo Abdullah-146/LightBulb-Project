@@ -9,22 +9,6 @@ const BASE_OUTLINE = "hsl(0, 0%, 60%)";
 const FILAMENT_ON_COLOR = "hsl(45, 80%, 100%)";
 const FILAMENT_OFF_COLOR = "hsl(0, 0%, 25%)";
 
-// Now takes amplitude and phase for a traveling, decaying wave
-function getWavyCordPath(knobX: number, knobY: number, amplitude: number, phase: number) {
-  const segments = 16;
-  const length = knobY - 220;
-  const step = length / segments;
-  let path = `M ${knobX} 220`;
-  for (let i = 1; i <= segments; i++) {
-    const y = 220 + i * step;
-    // Decay amplitude as we go down, and animate phase for traveling wave
-    const decay = Math.exp(-i / (segments * 0.7));
-    const wave = amplitude * decay * Math.sin((Math.PI * i) / segments + phase);
-    const x = knobX + wave * 18;
-    path += ` L ${x} ${y}`;
-  }
-  return path;
-}
 
 // Returns both the SVG path and the last (x, y) point for the knob
 function getWavyCordPathWithEnd(knobX: number, knobY: number, amplitude: number, phase: number) {
@@ -87,7 +71,7 @@ export default function LightBulb() {
     phase.set(0);
   };
 
-  const handlePointerUp = (e: React.PointerEvent<SVGSVGElement>) => {
+  const handlePointerUp = () => {
     if (!isDragging) return;
     setIsDragging(false);
     setDragStartY(null);
